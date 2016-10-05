@@ -109,30 +109,23 @@ class ssp extends Component {
   }
 
   render() {
-    const {myImageUri, yourImageUri, myResultText, yourResultText} = this.state;
+    const {myImageUri, yourImageUri, myResultText, yourResultText, straightWinCount, winCount} = this.state;
+    console.log(`------------------------${straightWinCount}`);
+    console.log(`------------${winCount}`);
     return (
       <View style={styles.container}>
         <View style={{flex:1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-          <Image
-            style={{width: 20, height: 20, backgroundColor: 'yellow'}}
-            source={require('./images/ic_grade.png')}
-          />
-          <Image
-            style={{width: 20, height: 20, backgroundColor: 'yellow'}}
-            source={require('./images/ic_grade.png')}
-          />
-          <Image
-            style={{width: 20, height: 20}}
-            source={require('./images/ic_grade.png')}
-          />
-          <Image
-            style={{width: 20, height: 20}}
-            source={require('./images/ic_grade.png')}
-          />
-          <Image
-            style={{width: 20, height: 20}}
-            source={require('./images/ic_grade.png')}
-          />
+          { [0,1,2,3,4].map((value) => {
+            const starStyle = value < winCount ? {width: 20, height: 20, backgroundColor: 'yellow'} : {width: 20, height: 20};
+            console.log(starStyle);
+            return (
+              <Image
+                key={value}
+                style={starStyle}
+                source={require('./images/ic_grade.png')}
+              />
+            );
+          }) }
         </View>
         <View style={{flex:2, flexDirection: 'row', justifyContent: 'space-around'}}>
           <Image
