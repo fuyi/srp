@@ -177,18 +177,7 @@ class ssp extends Component {
             source={yourImageUri}
           />
         </View>
-        <View style={{flex:2, flexDirection: 'row', justifyContent: 'space-around'}}>
-          { ssp.options.map((option, index) => {
-            return (
-              <TouchableOpacity onPress={this.judge(index)} key={index}>
-                <Image
-                  style={{width: 80, height: 80}}
-                  source={option.image}
-                />
-              </TouchableOpacity>
-            );
-          })}
-        </View>
+
         <View style={{flex:2, flexDirection: 'row', justifyContent: 'space-around'}}>
           <Image
             style={{width: 80, height: 80}}
@@ -203,6 +192,20 @@ class ssp extends Component {
             source={myImageUri}
           />
         </View>
+
+        <View style={{flex:2, flexDirection: 'row', justifyContent: 'space-around'}}>
+          { ssp.options.map((option, index) => {
+            return (
+              <TouchableOpacity onPress={this.judge(index)} key={index}>
+                <Image
+                  style={{width: 80, height: 80}}
+                  source={option.image}
+                />
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+
         <View style={{flex:1, flexDirection: 'row', alignItems: 'center', backgroundColor: 'skyblue', justifyContent: 'space-around'}}>
           <Button onPress={this._resetGame} text='重新开始'></Button>
           <Button onPress={this._resetGame} text='结束'></Button>
