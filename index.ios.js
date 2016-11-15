@@ -21,7 +21,7 @@ class ssp extends Component {
   constructor(props) {
     super(props);
 
-    this._resetGame();
+    this.state = ssp.initialState;
   }
 
   static initialState = {
@@ -36,7 +36,9 @@ class ssp extends Component {
    myImageUri: require('./images/default.png'),
    yourImageUri: require('./images/default.png'),
    myResultText: '',
+   myResultImage: require('./images/default.png'),
    yourResultText: '',
+   yourResultImage: require('./images/default.png'),
    isFirstSet: true,
    showModal: false,
    myResultTextStyle: {},
@@ -49,15 +51,20 @@ class ssp extends Component {
     { name: 'paper', image: require('./images/paper.jpg') }
   ];
 
+  static resultImages = {
+    'win': require('./images/win.png'),
+    'draw': require('./images/draw.png'),
+    'lose': require('./images/lose.png')
+  };
+
   _setModalVisible = (visible) => {
     this.setState({showModal: visible});
   };
 
   _resetGame = () => {
-    console.log('-----reset called');
-    console.log(this.state);
-    //TODO: Fix reset doesn't work issue
-    this.state = ssp.initialState;
+    this.setState({
+      ...ssp.initialState
+    });
   }
 
   _closeModal = () => {
@@ -91,21 +98,21 @@ class ssp extends Component {
     let yourResultTextStyle;
     switch (setResult) {
       case 1:
-        myResultText = '胜利';
+        myResultText = 'win';
         myResultTextStyle = styles.winText;
-        yourResultText = '失败';
+        yourResultText = 'lose';
         yourResultTextStyle = styles.loseText;
         break;
       case -1:
-        myResultText = '失败';
+        myResultText = 'lose';
         myResultTextStyle = styles.loseText;
-        yourResultText = '胜利';
+        yourResultText = 'win';
         yourResultTextStyle = styles.winText;
         break;
       default:
-        myResultText = '平局';
+        myResultText = 'draw';
         myResultTextStyle = styles.drawText;
-        yourResultText = '平局';
+        yourResultText = 'draw';
         yourResultTextStyle = styles.drawText;
 
     }
@@ -117,7 +124,9 @@ class ssp extends Component {
       straightWinCount,
       highestStraightWinCount,
       myImageUri: ssp.options[myChoice].image,
+      myResultImage: ssp.resultImages[myResultText],
       yourImageUri: ssp.options[yourChoice].image,
+      yourResultImage: ssp.resultImages[yourResultText],
       myResultText,
       yourResultText,
       winCount,
@@ -144,16 +153,16 @@ class ssp extends Component {
   }
 
   render() {
-    const {setResult, myImageUri, yourImageUri, myResultText, yourResultText, straightWinCount, winCount, showModal, myResultTextStyle, yourResultTextStyle} = this.state;
-    console.log(`------------------------${straightWinCount}`);
-    console.log(`------------${winCount}`);
+    const {setResult, myImageUri, yourImageUri, yourResultImage, myResultImage, myResultText, yourResultText, straightWinCount, winCount, showModal, myResultTextStyle, yourResultTextStyle} = this.state;
+    // console.log(`------------------------${straightWinCount}`);
+    // console.log(`------------${winCount}`);
 
     return (
       <View style={styles.container}>
         <View style={{flex:1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
           { [0,1,2,3,4].map((value) => {
             const starStyle = value < winCount ? {width: 20, height: 20, backgroundColor: 'yellow'} : {width: 20, height: 20};
-            console.log(starStyle);
+            // console.log(starStyle);
             return (
               <Image
                 key={value}
@@ -170,10 +179,15 @@ class ssp extends Component {
           />
           <View style={{flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center'}}>
             <Text style={styles.nameText}>爸爸</Text>
-            <Text style={yourResultTextStyle}>{yourResultText}</Text>
+            { setResult !== null &&
+              <Image
+                style={{width: 60, height: 60}}
+                source={yourResultImage}
+              />
+            }
           </View>
           <Image
-            style={{width: 80, height: 80}}
+            style={{width: 60, height: 60}}
             source={yourImageUri}
           />
         </View>
@@ -185,7 +199,12 @@ class ssp extends Component {
           />
           <View style={{flexDirection: 'column', justifyContent: 'space-around', alignItems: 'center'}}>
             <Text style={styles.nameText}>李子</Text>
-            <Text style={myResultTextStyle}>{myResultText}</Text>
+            { setResult !== null &&
+              <Image
+                style={{width: 60, height: 60}}
+                source={myResultImage}
+              />
+            }
           </View>
           <Image
             style={{width: 80, height: 80}}
